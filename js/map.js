@@ -73,10 +73,6 @@ var randomValueFromArray = function (arr) {
   return arr[num];
 };
 
-var randomArrayToNumber = function (arr) {
-  return Math.floor(Math.random() * arr.length + 1);
-};
-
 var arrayShuffle = function (arrayIn) {
   var array = arrayIn.slice();
   var randomArray = [];
