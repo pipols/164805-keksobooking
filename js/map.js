@@ -77,18 +77,21 @@ var randomArrayToNumber = function (arr) {
   return Math.floor(Math.random() * arr.length + 1);
 };
 
-var arrayShuffle = function (arr) {
-  return arr.sort(function (a, b) {
-    return Math.random() - 0.5;
-  });
+var arrayShuffle = function (arrayIn) {
+  var array = arrayIn.slice();
+  var randomArray = [];
+  while (array.length > 0) {
+    var randomIndex = Math.floor(Math.random() * array.length);
+    randomArray.push(array[randomIndex]);
+    array.splice(randomIndex, 1);
+  }
+  return randomArray;
 };
 
-var arrayToRandomArray = function (arr) {
-  return arr
-      .sort(function (a, b) {
-        return Math.random() - 0.5;
-      })
-      .slice(0, randomArrayToNumber(arr));
+var arrayToRandomArray = function (arrayIn) {
+  var shuffledArray = arrayShuffle(arrayIn);
+  shuffledArray.splice(getRandomNumber(0, arrayIn.length));
+  return shuffledArray;
 };
 
 var createAdsArray = function () {
