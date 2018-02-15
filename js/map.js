@@ -1,7 +1,13 @@
 'use strict';
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+var mapFiltersContainer = document.querySelector('.map__filters-container');
+var mapPinsContainer = document.querySelector('.map__pins');
+var pinElement = mapPinsContainer.querySelector('.map__pin');
+var noticeForm = document.querySelector('.notice__form');
+var noticeFormFieldsets = document.querySelectorAll('fieldset');
+var popup;
+var pinList;
 
 var AD_PARAMS = {
   AVATAR: [
@@ -126,17 +132,17 @@ var createAdsArray = function () {
 };
 
 var generatePinsNodes = function (adData) {
-  var pinTemplate = document.querySelector('.map__pin');
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < adData.length; i++) {
-    var pinElement = pinTemplate.cloneNode(true);
+    var pin = pinElement.cloneNode(true);
 
-    pinElement.style.left = adData[i].location.x - 25 + 'px';
-    pinElement.style.top = adData[i].location.y + 70 + 'px';
-    pinElement.querySelector('img').setAttribute('src', adData[i].author.avatar);
+    pin.style.left = adData[i].location.x - 25 + 'px';
+    pin.style.top = adData[i].location.y + 70 + 'px';
+    pin.setAttribute('data-pin_number', i);
+    pin.querySelector('img').setAttribute('src', adData[i].author.avatar);
 
-    fragment.appendChild(pinElement);
+    fragment.appendChild(pin);
   }
   return fragment;
 };
@@ -154,15 +160,12 @@ var renderCard = function (adsArrayElement) {
   mapCard.querySelectorAll('p')[4].textContent = adsArrayElement.offer.description;
 
   var popupFeatures = mapCard.querySelector('.popup__features');
-
-  while (popupFeatures.firstChild) {
-    popupFeatures.removeChild(popupFeatures.firstChild);
-  }
+  popupFeatures.innerHTML = ''; // затираем шаблон от тегов 'li'
 
   for (var i = 0; i < adsArrayElement.offer.features.length; i++) {
-    var popup = document.createElement('li');
-    popup.setAttribute('class', 'feature feature--' + adsArrayElement.offer.features[i]);
-    popupFeatures.appendChild(popup);
+    var innerPopup = document.createElement('li');
+    innerPopup.setAttribute('class', 'feature feature--' + adsArrayElement.offer.features[i]);
+    popupFeatures.appendChild(innerPopup);
   }
 
   var popupPicturesList = mapCard.querySelector('.popup__pictures');
@@ -183,10 +186,71 @@ var renderCard = function (adsArrayElement) {
   return mapCard;
 };
 
-var similarAds = createAdsArray();
+var similarAds = createAdsArray(); // генерация массива обьявлений
 
-var mapPinsList = document.querySelector('.map__pins');
-mapPinsList.appendChild(generatePinsNodes(similarAds));
+var removeFaded = function () {
+  map.classList.remove('map--faded');
+};
 
-var mapFiltersContainer = document.querySelector('.map__filters-container');
-map.insertBefore(renderCard(similarAds[0]), mapFiltersContainer);
+var addMapPins = function () {
+  mapPinsContainer.appendChild(generatePinsNodes(similarAds));
+};
+
+var mainPin = document.querySelector('.map__pin--main');
+var formAddress = document.querySelector('#address');
+var PIN_SIZE = {
+  WIDTH: 62,
+  HEIGHT: 74 // img 62 + ::after 12
+};
+
+var formEnable = function () {
+  noticeForm.classList.remove('notice__form--disabled');
+};
+
+var fieldsetsState = function (state) {
+  noticeFormFieldsets.forEach(function (elem) {
+    elem.disabled = state;
+  });
+};
+
+
+// ловим у нажатого пина координату и добовляем адрес в форму
+var getLocationForm = function (evt) {
+  formAddress.value = evt.currentTarget.offsetLeft + (PIN_SIZE.WIDTH / 2) + ', ' + (evt.currentTarget.offsetTop + PIN_SIZE.HEIGHT);
+};
+var closePopup = function () {
+  popup.classList.add('hidden');
+  document.removeEventListener('keydown', closePopup);
+};
+
+// открываем popap при нажатии на pin
+var openPopup = function (evt) {
+  var index = evt.currentTarget.getAttribute('data-pin_number');
+  if (map.contains(popup)) {
+    map.removeChild(popup);
+  }
+  map.insertBefore(renderCard(similarAds[index]), mapFiltersContainer);
+  popup = document.querySelector('.popup');
+  popup.classList.remove('hidden');
+  getLocationForm(evt);
+  popup.querySelector('.popup__close').addEventListener('click', closePopup);
+};
+
+var addMapPinsEventListeners = function () {
+  pinList = document.querySelectorAll('.map__pin');
+  pinList.forEach(function (elem) {
+    elem.addEventListener('click', openPopup);
+  });
+};
+
+var firstStartPage = function (evt) {
+  removeFaded();
+  formEnable();
+  fieldsetsState(false);
+  addMapPins();
+  getLocationForm(evt);
+  addMapPinsEventListeners();
+};
+
+fieldsetsState(true);
+mainPin.addEventListener('mouseup', firstStartPage);
