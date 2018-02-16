@@ -43,8 +43,7 @@ var AD_PARAMS = {
     MIN: 1,
     MAX: 5,
   },
-  CHECKIN: ['12:00', '13:00', '14:00'],
-  CHECKOUT: ['12:00', '13:00', '14:00'],
+  TIME: ['12:00', '13:00', '14:00'],
   FEATURES: [
     'wifi',
     'dishwasher',
@@ -102,7 +101,7 @@ var createAdsArray = function () {
   for (var i = 0; i < countAdvert; i++) {
     var locationX = getRandomNumber(AD_PARAMS.LOCATION_X.MIN, AD_PARAMS.LOCATION_X.MAX);
     var locationY = getRandomNumber(AD_PARAMS.LOCATION_Y.MIN, AD_PARAMS.LOCATION_Y.MAX);
-
+    var time = randomValueFromArray(AD_PARAMS.TIME);
     arrayAcc[i] = {
       author: {
         avatar: AD_PARAMS.AVATAR[i],
@@ -115,8 +114,8 @@ var createAdsArray = function () {
         type: randomValueFromArray(AD_PARAMS.TYPE),
         rooms: getRandomNumber(AD_PARAMS.ROOMS.MIN, AD_PARAMS.ROOMS.MAX),
         guests: getRandomNumber(AD_PARAMS.GUESTS.MIN, AD_PARAMS.GUESTS.MAX),
-        checkin: randomValueFromArray(AD_PARAMS.CHECKIN),
-        checkout: randomValueFromArray(AD_PARAMS.CHECKOUT),
+        checkin: time,
+        checkout: time,
         features: arrayToRandomArray(AD_PARAMS.FEATURES),
         description: '',
         photos: arrayShuffle(AD_PARAMS.PHOTOS),
@@ -206,7 +205,7 @@ var PIN_SIZE = {
 var formEnable = function () {
   noticeForm.classList.remove('notice__form--disabled');
 };
-
+// переписать
 var fieldsetsState = function (state) {
   noticeFormFieldsets.forEach(function (elem) {
     elem.disabled = state;
@@ -242,6 +241,58 @@ var addMapPinsEventListeners = function () {
     elem.addEventListener('click', openPopup);
   });
 };
+// ------------------------------------
+// module4-task2
+
+var TYPE_MIN_PRICE = {
+  flat: 1000,
+  bungalo: 0,
+  house: 5000,
+  palace: 10000
+};
+
+var noticeFormType = document.querySelector('#type');
+var noticeFormPrice = document.querySelector('#price');
+var noticeFormRoomNumber = document.querySelector('#room_number');
+var noticeFormCapacity = document.querySelector('#capacity');
+
+// console.log(noticeFormCapacity.options);
+// console.log(noticeFormCapacity.options[1]);
+// console.log(noticeFormCapacity.options.innerText);
+
+Array.from(noticeFormCapacity.options).map(function (elem) {
+  elem.disabled = true;
+});
+
+var noticeFormSelectionConstraint = function () {
+  noticeFormType.addEventListener('change', function (evt) {
+    var value = evt.currentTarget.value;
+    noticeFormPrice.min = TYPE_MIN_PRICE[value];
+  });
+};
+
+noticeFormSelectionConstraint();
+
+var ROOMS_AND_CAPACITY = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
+};
+
+var syncRoomNumberAndCapacity = function () {
+  noticeFormRoomNumber.addEventListener('change', function (evt) {
+    Array.from(noticeFormCapacity.options).map(function (elem) { // закрываем все, потом открываем нужные
+      elem.disabled = true;
+    });
+    var roomsValue = evt.currentTarget.value;
+    ROOMS_AND_CAPACITY[roomsValue].forEach(function (elem) {
+      noticeFormCapacity.querySelector('[value=\'' + elem + '\']').disabled = false;
+    });
+  });
+};
+
+syncRoomNumberAndCapacity();
 
 var firstStartPage = function (evt) {
   removeFaded();
