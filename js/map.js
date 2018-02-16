@@ -255,23 +255,25 @@ var noticeFormType = document.querySelector('#type');
 var noticeFormPrice = document.querySelector('#price');
 var noticeFormRoomNumber = document.querySelector('#room_number');
 var noticeFormCapacity = document.querySelector('#capacity');
-
-// console.log(noticeFormCapacity.options);
-// console.log(noticeFormCapacity.options[1]);
-// console.log(noticeFormCapacity.options.innerText);
+var noticeFormTimein = document.querySelector('#timein');
+var noticeFormTimeout = document.querySelector('#timeout');
 
 Array.from(noticeFormCapacity.options).map(function (elem) {
   elem.disabled = true;
 });
 
-var noticeFormSelectionConstraint = function () {
-  noticeFormType.addEventListener('change', function (evt) {
-    var value = evt.currentTarget.value;
-    noticeFormPrice.min = TYPE_MIN_PRICE[value];
-  });
-};
+noticeFormType.addEventListener('change', function (evt) {
+  var value = evt.currentTarget.value;
+  noticeFormPrice.min = TYPE_MIN_PRICE[value];
+});
 
-noticeFormSelectionConstraint();
+noticeFormTimein.addEventListener('change', function (evt) {
+  noticeFormTimeout.selectedIndex = evt.currentTarget.selectedIndex;
+});
+
+noticeFormTimeout.addEventListener('change', function (evt) {
+  noticeFormTimein.selectedIndex = evt.currentTarget.selectedIndex;
+});
 
 var ROOMS_AND_CAPACITY = {
   1: [1],
@@ -280,19 +282,15 @@ var ROOMS_AND_CAPACITY = {
   100: [0]
 };
 
-var syncRoomNumberAndCapacity = function () {
-  noticeFormRoomNumber.addEventListener('change', function (evt) {
-    Array.from(noticeFormCapacity.options).map(function (elem) { // закрываем все, потом открываем нужные
-      elem.disabled = true;
-    });
-    var roomsValue = evt.currentTarget.value;
-    ROOMS_AND_CAPACITY[roomsValue].forEach(function (elem) {
-      noticeFormCapacity.querySelector('[value=\'' + elem + '\']').disabled = false;
-    });
+noticeFormRoomNumber.addEventListener('change', function (evt) {
+  Array.from(noticeFormCapacity.options).map(function (elem) { // закрываем все, потом открываем нужные
+    elem.disabled = true;
   });
-};
-
-syncRoomNumberAndCapacity();
+  var roomsValue = evt.currentTarget.value;
+  ROOMS_AND_CAPACITY[roomsValue].forEach(function (elem) {
+    noticeFormCapacity.querySelector('[value=\'' + elem + '\']').disabled = false;
+  });
+});
 
 var firstStartPage = function (evt) {
   removeFaded();
