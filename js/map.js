@@ -258,6 +258,20 @@ var noticeFormCapacity = document.querySelector('#capacity');
 var noticeFormTimein = document.querySelector('#timein');
 var noticeFormTimeout = document.querySelector('#timeout');
 
+var ROOMS_AND_CAPACITY = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
+};
+
+var ROOMS_AND_CAPACITY_SELECTED_SYNC = {
+  1: [2],
+  2: [2],
+  3: [2],
+  100: [3]
+};
+
 Array.from(noticeFormCapacity.options).map(function (elem) {
   elem.disabled = true;
 });
@@ -275,18 +289,12 @@ noticeFormTimeout.addEventListener('change', function (evt) {
   noticeFormTimein.selectedIndex = evt.currentTarget.selectedIndex;
 });
 
-var ROOMS_AND_CAPACITY = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0]
-};
-
 noticeFormRoomNumber.addEventListener('change', function (evt) {
   Array.from(noticeFormCapacity.options).map(function (elem) { // закрываем все, потом открываем нужные
     elem.disabled = true;
   });
   var roomsValue = evt.currentTarget.value;
+  noticeFormCapacity.selectedIndex = ROOMS_AND_CAPACITY_SELECTED_SYNC[roomsValue][0];
   ROOMS_AND_CAPACITY[roomsValue].forEach(function (elem) {
     noticeFormCapacity.querySelector('[value=\'' + elem + '\']').disabled = false;
   });
