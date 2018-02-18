@@ -10,11 +10,16 @@
     window.map.addMapPins();
     window.form.getLocationForm(evt);
     window.map.addMapPinsEventListeners();
+    offStartPageHandler();
   };
 
-  window.startPageHandler = function () {
+  var startPageHandler = function () {
     mainPin.addEventListener('mouseup', window.firstStartPage);
   };
 
-  window.startPageHandler();
+  var offStartPageHandler = function () {
+    mainPin.removeEventListener('mouseup', window.firstStartPage);
+  };
+
+  startPageHandler();
 })();

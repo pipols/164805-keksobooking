@@ -108,7 +108,4 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
-
-
-  mainPin.addEventListener('mouseup', window.firstStartPage);
 })();

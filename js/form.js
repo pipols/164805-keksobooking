@@ -46,7 +46,7 @@
     },
   };
 
-  Array.from(noticeFormCapacity.options).map(function (elem) {
+  Array.from(noticeFormCapacity.options).forEach(function (elem) {
     elem.disabled = true;
   });
 
