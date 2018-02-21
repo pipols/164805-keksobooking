@@ -1,8 +1,7 @@
 'use strict';
 
 (function () {
-  var mapPinsContainer = document.querySelector('.map__pins');
-  var pinElement = mapPinsContainer.querySelector('.map__pin');
+  var pinElement = document.querySelector('template').content.querySelector('.map__pin');
 
   window.generatePinsNodes = function (adData) {
     var fragment = document.createDocumentFragment();

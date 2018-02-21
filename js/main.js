@@ -3,7 +3,7 @@
 (function () {
   var mainPin = document.querySelector('.map__pin--main');
 
-  window.firstStartPage = function (evt) {
+  var firstStartPage = function (evt) {
     window.map.removeFaded();
     window.form.formEnable();
     window.form.fieldsetsState(false);
@@ -14,11 +14,11 @@
   };
 
   var startPageHandler = function () {
-    mainPin.addEventListener('mouseup', window.firstStartPage);
+    mainPin.addEventListener('mouseup', firstStartPage);
   };
 
   var offStartPageHandler = function () {
-    mainPin.removeEventListener('mouseup', window.firstStartPage);
+    mainPin.removeEventListener('mouseup', firstStartPage);
   };
 
   startPageHandler();
