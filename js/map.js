@@ -11,7 +11,6 @@
   var pinList;
   var adData;
 
-
   var restrictionOfMovement = {
     x: {
       min: mainPin.offsetParent.offsetLeft,
@@ -37,7 +36,6 @@
   };
 
   window.backend.download(dataSuccessHandler, dataErrorHandler);
-
 
   var removeFaded = function () {
     map.classList.remove('map--faded');
