@@ -9,6 +9,8 @@
   var noticeFormAddress = document.querySelector('#address');
   var popup;
   var pinList;
+  var adData;
+
 
   var restrictionOfMovement = {
     x: {
@@ -27,13 +29,22 @@
   };
   mainPin.style.zIndex = 2;
 
+  var dataSuccessHandler = function (response) {
+    adData = response;
+  };
+
+  var dataErrorHandler = function () {
+  };
+
+  window.backend.download(dataSuccessHandler, dataErrorHandler);
+
   window.map = {
     removeFaded: function () {
       map.classList.remove('map--faded');
     },
 
     addMapPins: function () {
-      mapPinsContainer.appendChild(window.generatePinsNodes(window.similarAds));
+      mapPinsContainer.appendChild(window.generatePinsNodes(adData));
     },
 
     addMapPinsEventListeners: function () {
@@ -54,7 +65,7 @@
     if (map.contains(popup)) {
       map.removeChild(popup);
     }
-    map.insertBefore(window.renderCard(window.similarAds[index]), mapFiltersContainer);
+    map.insertBefore(window.renderCard(adData[index]), mapFiltersContainer);
     popup = document.querySelector('.popup');
     popup.classList.remove('hidden');
     window.form.getLocationForm(evt);

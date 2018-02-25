@@ -74,5 +74,20 @@
     });
   });
 
+  var submitSuccessHandler = function () {
+    window.alert.onSuccess('Форма отправлена');
+  };
+
+  var submitErrorHandler = function () {
+    window.alert.onError('Ошибка отправки формы');
+  };
+
+  var submitHandler = function (evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(noticeForm), submitSuccessHandler, submitErrorHandler);
+
+  };
+
+  noticeForm.addEventListener('submit', submitHandler);
 
 })();
