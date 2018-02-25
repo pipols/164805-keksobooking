@@ -32,23 +32,20 @@
     WIDTH: 62,
     HEIGHT: 74
   };
-  window.form = {
-    getLocationForm: function (evt) {
-      noticeFormAddress.value = evt.currentTarget.offsetLeft + (PIN_SIZE.WIDTH / 2) + ', ' + (evt.currentTarget.offsetTop + PIN_SIZE.HEIGHT);
-    },
-    formEnable: function () {
-      noticeForm.classList.remove('notice__form--disabled');
-    },
-    fieldsetsState: function (state) {
-      noticeFormFieldsets.forEach(function (elem) {
-        elem.disabled = state;
-      });
-    },
+
+  var getLocationForm = function (evt) {
+    noticeFormAddress.value = evt.currentTarget.offsetLeft + (PIN_SIZE.WIDTH / 2) + ', ' + (evt.currentTarget.offsetTop + PIN_SIZE.HEIGHT);
   };
 
-  Array.from(noticeFormCapacity.options).forEach(function (elem) {
-    elem.disabled = true;
-  });
+  var formEnable = function () {
+    noticeForm.classList.remove('notice__form--disabled');
+  };
+
+  var fieldsetsState = function (state) {
+    noticeFormFieldsets.forEach(function (elem) {
+      elem.disabled = state;
+    });
+  };
 
   noticeFormType.addEventListener('change', function (evt) {
     var value = evt.currentTarget.value;
@@ -64,7 +61,7 @@
   });
 
   noticeFormRoomNumber.addEventListener('change', function (evt) {
-    Array.from(noticeFormCapacity.options).map(function (elem) { // закрываем все, потом открываем нужные
+    Array.from(noticeFormCapacity.options).forEach(function (elem) { // закрываем все, потом открываем нужные
       elem.disabled = true;
     });
     var roomsValue = evt.currentTarget.value;
@@ -90,4 +87,9 @@
 
   noticeForm.addEventListener('submit', submitHandler);
 
+  window.form = {
+    getLocationForm: getLocationForm,
+    formEnable: formEnable,
+    fieldsetsState: fieldsetsState
+  };
 })();
