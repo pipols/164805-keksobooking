@@ -2,9 +2,9 @@
 
 (function () {
   var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
-  var mapCard = mapCardTemplate.cloneNode(true);
 
-  window.renderCard = function (adsArrayElement) {
+  var renderCard = function (adsArrayElement) {
+    var mapCard = mapCardTemplate.cloneNode(true);
     mapCard.querySelector('h3').textContent = adsArrayElement.offer.title;
     mapCard.querySelector('p').textContent = adsArrayElement.offer.address;
     mapCard.querySelector('.popup__price').textContent = adsArrayElement.offer.price + '\u20bd;/ночь';
@@ -38,5 +38,8 @@
     mapCard.querySelector('img').src = adsArrayElement.author.avatar;
 
     return mapCard;
+  };
+  window.card = {
+    renderCard: renderCard
   };
 })();

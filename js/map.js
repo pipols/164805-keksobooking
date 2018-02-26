@@ -9,6 +9,7 @@
   var noticeFormAddress = document.querySelector('#address');
   var popup;
   var pinList;
+  var adData;
 
   var restrictionOfMovement = {
     x: {
@@ -27,21 +28,28 @@
   };
   mainPin.style.zIndex = 2;
 
-  window.map = {
-    removeFaded: function () {
-      map.classList.remove('map--faded');
-    },
+  var dataSuccessHandler = function (response) {
+    adData = response;
+  };
 
-    addMapPins: function () {
-      mapPinsContainer.appendChild(window.generatePinsNodes(window.similarAds));
-    },
+  var dataErrorHandler = function () {
+  };
 
-    addMapPinsEventListeners: function () {
-      pinList = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      pinList.forEach(function (elem) {
-        elem.addEventListener('click', openPopup);
-      });
-    },
+  window.backend.download(dataSuccessHandler, dataErrorHandler);
+
+  var removeFaded = function () {
+    map.classList.remove('map--faded');
+  };
+
+  var addMapPins = function () {
+    mapPinsContainer.appendChild(window.pin.generatePinsNodes(adData));
+  };
+
+  var addMapPinsEventListeners = function () {
+    pinList = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    pinList.forEach(function (elem) {
+      elem.addEventListener('click', openPopup);
+    });
   };
 
   var closePopup = function () {
@@ -54,10 +62,9 @@
     if (map.contains(popup)) {
       map.removeChild(popup);
     }
-    map.insertBefore(window.renderCard(window.similarAds[index]), mapFiltersContainer);
+    map.insertBefore(window.card.renderCard(adData[index]), mapFiltersContainer);
     popup = document.querySelector('.popup');
     popup.classList.remove('hidden');
-    window.form.getLocationForm(evt);
     popup.querySelector('.popup__close').addEventListener('click', closePopup);
   };
 
@@ -112,4 +119,10 @@
     document.addEventListener('mousemove', MouseMoveHandler);
     document.addEventListener('mouseup', MouseUpHandler);
   });
+
+  window.map = {
+    removeFaded: removeFaded,
+    addMapPins: addMapPins,
+    addMapPinsEventListeners: addMapPinsEventListeners
+  };
 })();
