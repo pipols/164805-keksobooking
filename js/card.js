@@ -30,7 +30,6 @@
       var popupImage = document.createElement('img');
       popupImage.src = elem;
       popupImage.style.width = '105px';
-      popupImage.style.height = '85px';
       popupPicturesItem.appendChild(popupImage);
       popupPicturesList.appendChild(popupPicturesItem);
     });

@@ -10,6 +10,8 @@
   var noticeFormTimein = document.querySelector('#timein');
   var noticeFormTimeout = document.querySelector('#timeout');
   var noticeFormFieldsets = document.querySelectorAll('fieldset');
+  var noticeFormReset = document.querySelector('.form__reset');
+  var map = document.querySelector('.map');
   var TYPE_MIN_PRICE = {
     flat: 1000,
     bungalo: 0,
@@ -32,9 +34,9 @@
     WIDTH: 62,
     HEIGHT: 74
   };
-
-  var getLocationForm = function (evt) {
-    noticeFormAddress.value = evt.currentTarget.offsetLeft + (PIN_SIZE.WIDTH / 2) + ', ' + (evt.currentTarget.offsetTop + PIN_SIZE.HEIGHT);
+  var mainPin = document.querySelector('.map__pin--main');
+  var getLocationForm = function () {
+    noticeFormAddress.value = mainPin.offsetLeft + (PIN_SIZE.WIDTH / 2) + ', ' + (mainPin.offsetTop + PIN_SIZE.HEIGHT);
   };
 
   var formEnable = function () {
@@ -71,8 +73,28 @@
     });
   });
 
+  noticeFormReset.addEventListener('click', function () {
+    pageReset();
+  });
+
+  var pageReset = function () {
+    noticeForm.reset();
+    document.querySelector('.map').classList.add('map--faded');
+    noticeForm.classList.add('notice__form--disabled');
+    window.form.fieldsetsState(true);
+    while (map.contains(document.querySelector('.map__pin:not(.map__pin--main)'))) {
+      document.querySelector('.map__pin:not(.map__pin--main)').remove();
+    }
+    if (map.contains(document.querySelector('.popup'))) {
+      map.removeChild(document.querySelector('.popup'));
+    }
+
+    window.startPageHandler();
+  };
+
   var submitSuccessHandler = function () {
     window.alert.onSuccess('Форма отправлена');
+    pageReset();
   };
 
   var submitErrorHandler = function () {
