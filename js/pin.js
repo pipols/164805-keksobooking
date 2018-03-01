@@ -1,9 +1,14 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
   var pinElement = document.querySelector('template').content.querySelector('.map__pin');
 
   var generatePinsNodes = function (adData) {
+    adData = adData.slice(0, 5); // !!!
+    while (map.contains(document.querySelector('.map__pin:not(.map__pin--main)'))) {
+      document.querySelector('.map__pin:not(.map__pin--main)').remove();
+    }
     var fragment = document.createDocumentFragment();
 
     adData.forEach(function (elem, i) {
