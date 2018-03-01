@@ -17,6 +17,18 @@
   var filterConditioner = document.querySelector('#filter-conditioner');
 
   var DEBOUNCE_INTERVAL = 500;
+  var FILTER_OFFERS_PRICE_LIMITS = {
+    MIDDLE: {
+      MIN: 10000,
+      MAX: 50000
+    },
+    LOW: {
+      MAX: 10000
+    },
+    HIGH: {
+      MIN: 50000
+    }
+  };
 
   housingType.addEventListener('change', function () {
     window.map.closePopup();
@@ -50,11 +62,11 @@
         case 'any':
           return offers;
         case 'middle':
-          return offers.offer.price >= 10000 && offers.offer.price <= 50000;
+          return offers.offer.price >= FILTER_OFFERS_PRICE_LIMITS.MIDDLE.MIN && offers.offer.price <= FILTER_OFFERS_PRICE_LIMITS.MIDDLE.MAX;
         case 'low':
-          return offers.offer.price <= 10000;
+          return offers.offer.price <= FILTER_OFFERS_PRICE_LIMITS.LOW.MAX;
         case 'high':
-          return offers.offer.price >= 50000;
+          return offers.offer.price >= FILTER_OFFERS_PRICE_LIMITS.HIGH.MIN;
       }
       return offers;
     }).filter(function (offers) {
@@ -98,7 +110,8 @@
       }
       return offers;
     });
-    window.map.addMapPins(filter);
+    window.newData = filter;
+    window.map.addMapPins(window.newData);
   };
 
   var lastTimeout;

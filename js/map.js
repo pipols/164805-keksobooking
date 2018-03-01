@@ -10,6 +10,7 @@
   var popup;
   var pinList;
   window.adData = [];
+  window.newData = [];
 
   var restrictionOfMovement = {
     x: {
@@ -74,7 +75,11 @@
     if (map.contains(popup)) {
       map.removeChild(popup);
     }
-    map.insertBefore(window.card.renderCard(window.adData[index]), mapFiltersContainer);
+    if (window.newData.length) {
+      map.insertBefore(window.card.renderCard(window.newData[index]), mapFiltersContainer);
+    } else {
+      map.insertBefore(window.card.renderCard(window.adData[index]), mapFiltersContainer);
+    }
     popup = document.querySelector('.popup');
     popup.classList.remove('hidden');
     popup.querySelector('.popup__close').addEventListener('click', closePopup);
