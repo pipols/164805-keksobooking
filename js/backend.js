@@ -4,14 +4,18 @@
 
   var SEND_FORM = 'https://js.dump.academy/keksobooking';
   var GET_DATA = 'https://js.dump.academy/keksobooking/data';
+  var REQUEST_TIMEOUT = 10000;
+  var REQUEST_STATUS = {
+    OK: 200
+  };
 
   var initRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
-    xhr.timeout = 10000;
+    xhr.timeout = REQUEST_TIMEOUT;
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === REQUEST_STATUS.OK) {
         onLoad(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);

@@ -1,21 +1,6 @@
 'use strict';
 
 (function () {
-  var filter = [];
-
-  var housingType = document.querySelector('#housing-type');
-  var housingPrice = document.querySelector('#housing-price');
-  var housingRooms = document.querySelector('#housing-rooms');
-  var housingGuests = document.querySelector('#housing-guests');
-  var housingFeatures = document.querySelector('#housing-features');
-
-  var filterWifi = document.querySelector('#filter-wifi');
-  var filterDishwasher = document.querySelector('#filter-dishwasher');
-  var filterParking = document.querySelector('#filter-parking');
-  var filterWasher = document.querySelector('#filter-washer');
-  var filterElevator = document.querySelector('#filter-elevator');
-  var filterConditioner = document.querySelector('#filter-conditioner');
-
   var DEBOUNCE_INTERVAL = 500;
   var FILTER_OFFERS_PRICE_LIMITS = {
     MIDDLE: {
@@ -30,24 +15,40 @@
     }
   };
 
+  var filter = [];
+  var formFilter = document.querySelector('.map__filters');
+
+  var housingType = formFilter.querySelector('#housing-type');
+  var housingPrice = formFilter.querySelector('#housing-price');
+  var housingRooms = formFilter.querySelector('#housing-rooms');
+  var housingGuests = formFilter.querySelector('#housing-guests');
+  var housingFeatures = formFilter.querySelector('#housing-features');
+
+  var filterWifi = formFilter.querySelector('#filter-wifi');
+  var filterDishwasher = formFilter.querySelector('#filter-dishwasher');
+  var filterParking = formFilter.querySelector('#filter-parking');
+  var filterWasher = formFilter.querySelector('#filter-washer');
+  var filterElevator = formFilter.querySelector('#filter-elevator');
+  var filterConditioner = formFilter.querySelector('#filter-conditioner');
+
   housingType.addEventListener('change', function () {
-    window.map.closePopup();
+    window.map.closePopupHandler();
     debounce(filterOffers);
   });
   housingPrice.addEventListener('change', function () {
-    window.map.closePopup();
+    window.map.closePopupHandler();
     debounce(filterOffers);
   });
   housingRooms.addEventListener('change', function () {
-    window.map.closePopup();
+    window.map.closePopupHandler();
     debounce(filterOffers);
   });
   housingGuests.addEventListener('change', function () {
-    window.map.closePopup();
+    window.map.closePopupHandler();
     debounce(filterOffers);
   });
   housingFeatures.addEventListener('change', function () {
-    window.map.closePopup();
+    window.map.closePopupHandler();
     debounce(filterOffers);
   });
 
@@ -121,6 +122,4 @@
     }
     lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
   };
-
-
 })();
