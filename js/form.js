@@ -1,6 +1,17 @@
 'use strict';
 
 (function () {
+  var noticeForm = document.querySelector('.notice__form');
+  var noticeFormAddress = document.querySelector('#address');
+  var noticeFormType = document.querySelector('#type');
+  var noticeFormPrice = document.querySelector('#price');
+  var noticeFormRoomNumber = document.querySelector('#room_number');
+  var noticeFormCapacity = document.querySelector('#capacity');
+  var noticeFormTimein = document.querySelector('#timein');
+  var noticeFormTimeout = document.querySelector('#timeout');
+  var noticeFormFieldsets = document.querySelectorAll('fieldset');
+  var noticeFormReset = document.querySelector('.form__reset');
+  var map = document.querySelector('.map');
   var TYPE_MIN_PRICE = {
     flat: 1000,
     bungalo: 0,
@@ -23,21 +34,7 @@
     WIDTH: 62,
     HEIGHT: 74
   };
-
-  var noticeForm = document.querySelector('.notice__form');
-  var noticeFormAddress = noticeForm.querySelector('#address');
-  var noticeFormType = noticeForm.querySelector('#type');
-  var noticeFormPrice = noticeForm.querySelector('#price');
-  var noticeFormRoomNumber = noticeForm.querySelector('#room_number');
-  var noticeFormCapacity = noticeForm.querySelector('#capacity');
-  var noticeFormTimein = noticeForm.querySelector('#timein');
-  var noticeFormTimeout = noticeForm.querySelector('#timeout');
-  var noticeFormFieldsets = noticeForm.querySelectorAll('fieldset');
-  var noticeFormReset = noticeForm.querySelector('.form__reset');
-
-  var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
-
   var getLocationForm = function () {
     noticeFormAddress.value = mainPin.offsetLeft + (PIN_SIZE.WIDTH / 2) + ', ' + (mainPin.offsetTop + PIN_SIZE.HEIGHT);
   };
