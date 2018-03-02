@@ -1,17 +1,24 @@
 'use strict';
 
 (function () {
+  var PARAGRAPH = {
+    ADDRESS: 1,
+    ROOMS: 2,
+    TIME: 3,
+    DESCRIPTION: 4
+  };
+
   var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
 
   var renderCard = function (adsArrayElement) {
     var mapCard = mapCardTemplate.cloneNode(true);
     mapCard.querySelector('h3').textContent = adsArrayElement.offer.title;
-    mapCard.querySelector('p').textContent = adsArrayElement.offer.address;
+    mapCard.querySelectorAll('p')[PARAGRAPH.ADDRESS].textContent = adsArrayElement.offer.address;
     mapCard.querySelector('.popup__price').textContent = adsArrayElement.offer.price + '\u20bd;/ночь';
     mapCard.querySelector('h4').textContent = adsArrayElement.type;
-    mapCard.querySelectorAll('p')[2].textContent = adsArrayElement.offer.rooms + ' комнаты для ' + adsArrayElement.offer.guests + ' гостей';
-    mapCard.querySelectorAll('p')[3].textContent = 'Заезд после ' + adsArrayElement.offer.checkin + ', выезд до ' + adsArrayElement.offer.checkout;
-    mapCard.querySelectorAll('p')[4].textContent = adsArrayElement.offer.description;
+    mapCard.querySelectorAll('p')[PARAGRAPH.ROOMS].textContent = adsArrayElement.offer.rooms + ' комнаты для ' + adsArrayElement.offer.guests + ' гостей';
+    mapCard.querySelectorAll('p')[PARAGRAPH.TIME].textContent = 'Заезд после ' + adsArrayElement.offer.checkin + ', выезд до ' + adsArrayElement.offer.checkout;
+    mapCard.querySelectorAll('p')[PARAGRAPH.DESCRIPTION].textContent = adsArrayElement.offer.description;
 
     var popupFeatures = mapCard.querySelector('.popup__features');
     popupFeatures.innerHTML = '';

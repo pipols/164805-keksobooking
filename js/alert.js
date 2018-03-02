@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var POPUP_TIMEOUT = 2000;
+
   var body = document.querySelector('body');
   var messageElement = document.createElement('div');
 
@@ -8,7 +10,7 @@
     elem.style.display = 'none';
   };
 
-  var popupMessage = function (message) {
+  var showPopupMessage = function (message) {
     messageElement.classList.add('popupMessage');
     messageElement.textContent = message;
     messageElement.style.position = 'fixed';
@@ -25,23 +27,23 @@
 
     setTimeout(function () {
       hideElement(messageElement);
-    }, 2000);
+    }, POPUP_TIMEOUT);
   };
 
-  var errorMessage = function (message) {
-    popupMessage(message);
+  var showErrorMessage = function (message) {
+    showPopupMessage(message);
     messageElement.style.color = '#d8000c';
     messageElement.style.backgroundColor = '#ffbaba';
   };
 
-  var successMessage = function (message) {
-    popupMessage(message);
+  var showSuccessMessage = function (message) {
+    showPopupMessage(message);
     messageElement.style.color = '#270';
     messageElement.style.backgroundColor = '#dff2bf';
   };
 
   window.alert = {
-    onError: errorMessage,
-    onSuccess: successMessage
+    onError: showErrorMessage,
+    onSuccess: showSuccessMessage
   };
 })();
